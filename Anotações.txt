@@ -1,0 +1,52 @@
+Anotações do dia 09/02/2023
+
+04/05 - Avaliação Pratica sobre os conceitos abordados/Entrega do projeto.
+11/05 - Fechamento do diario de aula.
+18/05 - Recuperação.
+
+Plano de ensino
+https://drive.google.com/file/d/1GaQDP59O0DzIHV37VlYiY7mPjZcRvIOp/view?usp=sharing
+
+Normas laboratório
+https://paranavai.ifpr.edu.br/wp-content/uploads/2017/10/IIP-Laboratório-de-Informática.pdf
+
+Diário de aula
+https://docs.google.com/spreadsheets/d/1Y3Kyq-1pZ4vSjDppFY5kOovFNuSqQZrfeIZbDtAfpNM/edit?usp=sharing
+
+Atividade
+INDIVIDUAL
+- Criar um repositório no GitHub da disciplina;
+- Efetuar commits das anotações das aulas;
+- Anotar a apresentação do professor, disciplina, avaliação, plano de ensino, recados/informações importantes, horário de atendimento, contato;
+- Olhar e analisar o calendário e o plano de ensino
+- Tirar todas as dúvidas 
+- Verificar sábado letivo da disciplina
+
+Equipe
+- Formar equipes de 4 pessoas 
+- Até o intervalo, analisar livros correlatos da disciplina e realizar empréstimo(s) de livro(s)
+- Organizar uma apresentação de 15 minutos. Pesquisar, discutir com colegas, pedir “pistas” para o professor... 
+- Das informações apresentadas nas primeiras aulas;
+- explicar o gráfico do próximo slide;
+- Exemplificar padrões de design e/ou arquitetura por meio projetos;
+- Apresentar o livro escolhido com as devidas justificativas.
+
+COMPONENTE CURRICULAR: Projeto de Software Avançado
+•CARGA HORÁRIA: 160/133
+
+•EMENTA:
+– Conceitos Básicos: Princípios e fundamentos de projeto de software orientado a objetos (abstração, acoplamento, coesão, encapsulamento, SOLID, etc). Projeto e implementação de software em diferentes paradigmas de programação. Artefatos de projeto de software. Notações de projeto de software. Qualidade de projeto de software. Atributos de qualidade de projeto de software (concorrência, controle de tratamento de eventos, tratamento de exceções, persistência, distribuição, interação, etc). Padrões de Projeto de Software. Prática de projeto de software.
+
+BIBLIOGRAFIA BÁSICA:
+–GAMMA, Erich et al. Padrões de projeto: soluções reutilizáveis de software orientado a objetos. Porto Alegre: Bookman, 2000. 364 p. ISBN 8573076100.
+–MARTIN, Robert C.; MARTIN, Micah. Princípios, padrões e práticas ágeis em C#. Porto Alegre: Bookman, 2011. 735 p.
+–PRESSMAN, Roger; MAXIM, Bruce. Engenharia de Software. 8ª Edição. McGraw Hill Brasil, 2016.
+–SILVEIRA, Paulo. Introdução à Arquitetura e Design de Software: Uma Introdução à Plataforma Java. 1. ed. Elsevier Brasil, 2011.
+–SIERRA, Kathy; BATES, Bert. Use a cabeça!: Java. 2. ed. Rio de Janeiro: Alta Books, 2010. 484 p.
+
+BIBLIOGRAFIA COMPLEMENTAR:
+–MEDEIROS, Ernani. Desenvolvendo software com UML 2.0: definitivo. São Paulo: Pearson Makron Books, 2004.
+–DENNIS, Alan. Análise e projeto de sistemas. 5. ed. Rio de Janeiro: LTC, 2014. 461 p. ISBN 9788521625094.
+–PAULA FILHO, Wilson de Pádua. Engenharia de software: fundamentos, métodos e padrões. 3. ed. Rio de Janeiro: LTC, 2009. 1248 p. ISBN 9788521616504.
+–DEV Media. Engenharia de Software Magazine. Formato Digital.
+–Robert C. Martin, Design Principles and Design Patterns, Series of Articles, C   Report, March 1996. Formato Digital.
