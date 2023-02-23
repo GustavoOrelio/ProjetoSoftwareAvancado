@@ -1,6 +1,6 @@
+import 'package:aula_16_02/inicializador.dart';
 import 'package:flutter/material.dart';
 
-import 'inicializador.dart';
 
 void main() {
   runApp(const Inicializador());
@@ -13,7 +13,5 @@ void main() {
   Muita tabulação dificulta leitura
   A identação esta confusa
   Criacao de objeto na passagem de parametro
-  Criar variaveis temporarias para facilicar a leitura
-  Complicar para descomplicar... definir funçoes/componentes
 
 */
