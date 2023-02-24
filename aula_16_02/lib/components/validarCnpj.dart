@@ -1,14 +1,10 @@
 bool ValidarCNPJ(String cnpj) {
-  // Remove caracteres não numéricos
   cnpj = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
 
-  // Verifica se o CNPJ tem 14 dígitos
   if (cnpj.length != 14) return false;
 
-  // Verifica se todos os dígitos são iguais
   if (RegExp(r'^(\d)\1*$').hasMatch(cnpj)) return false;
-
-  // Algoritmo de validação
+  
   List<int> digitos = cnpj.split('').map((e) => int.parse(e)).toList();
   int soma = 0;
   int peso = 2;

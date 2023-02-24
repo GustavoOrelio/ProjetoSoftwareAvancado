@@ -14,7 +14,17 @@ class PrimeiraPagina extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
-              child: Text('Valide seu CPF'),
+              color: Colors.blue,
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: const Text(
+                'Valide seu CPF',
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -22,9 +32,19 @@ class PrimeiraPagina extends StatelessWidget {
                 );
               },
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 18.0),
             RaisedButton(
-              child: Text('Valide seu CNPJ'),
+              color: Colors.blue,
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: const Text(
+                'Valide seu CNPJ',
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,

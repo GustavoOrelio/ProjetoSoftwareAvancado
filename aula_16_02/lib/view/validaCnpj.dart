@@ -1,4 +1,4 @@
-import 'package:aula_16_02/widgets/validarCnpj.dart';
+import 'package:aula_16_02/components/validarCnpj.dart';
 import 'package:flutter/material.dart';
 
 class ValidaCnpj extends StatefulWidget {
