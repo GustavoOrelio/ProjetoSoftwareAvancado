@@ -7,7 +7,11 @@ class PrimeiraPagina extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Valide Aqui'),
+        centerTitle: true,
+        title: const Text(
+          'Valide Aqui',
+          style: TextStyle(fontSize: 25),
+        ),
       ),
       body: Center(
         child: Column(

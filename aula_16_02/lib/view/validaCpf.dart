@@ -24,10 +24,15 @@ class _FormularioCPFState extends State<ValidaCpf> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  const Text(
+                    'Insira o CPF:',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(height: 10),
                   TextFormField(
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                        labelText: 'CPF', hintText: '000.000.000-00'),
+                    decoration:
+                        const InputDecoration(hintText: '000.000.000-00'),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, informe o CPF.';
