@@ -5,29 +5,31 @@ import '../components/produto.dart';
 import '../components/venda.dart';
 
 class TelaVenda extends StatefulWidget {
+  const TelaVenda({Key? key}) : super(key: key);
+
   @override
   _TelaVendaState createState() => _TelaVendaState();
 }
 
 class _TelaVendaState extends State<TelaVenda> {
-  Cliente _cliente = Cliente('João', 'Rua A, 123');
-  Venda _venda = Venda(cliente: Cliente('João', 'Rua A, 123'));
-  TextEditingController _controllerNome = TextEditingController();
-  TextEditingController _controllerPreco = TextEditingController();
-  TextEditingController _controllerDesconto = TextEditingController();
+  final Cliente _cliente = Cliente('João', 'Rua A, 123');
+  final Venda _venda = Venda(cliente: Cliente('João', 'Rua A, 123'));
+  final TextEditingController _controllerNome = TextEditingController();
+  final TextEditingController _controllerPreco = TextEditingController();
+  final TextEditingController _controllerDesconto = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Minha loja'),
+        title: const Text('Minha loja'),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -37,26 +39,26 @@ class _TelaVendaState extends State<TelaVenda> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextField(
                     controller: _controllerNome,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Nome do produto',
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   TextField(
                     controller: _controllerPreco,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Preço do produto',
                       prefixText: 'R\$ ',
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () {
                       String nome = _controllerNome.text;
@@ -69,7 +71,7 @@ class _TelaVendaState extends State<TelaVenda> {
                       _controllerPreco.clear();
                       setState(() {});
                     },
-                    child: Text('Adicionar produto'),
+                    child: const Text('Adicionar produto'),
                   ),
                 ],
               ),
@@ -90,21 +92,21 @@ class _TelaVendaState extends State<TelaVenda> {
               },
             ),
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                       'Valor total: R\$ ${_venda.valorTotal.toStringAsFixed(2)}'),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   TextField(
                     controller: _controllerDesconto,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Desconto (%)',
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () {
                       double desconto =
@@ -113,7 +115,7 @@ class _TelaVendaState extends State<TelaVenda> {
                       _controllerDesconto.clear();
                       setState(() {});
                     },
-                    child: Text('Aplicar desconto'),
+                    child: const Text('Aplicar desconto'),
                   ),
                 ],
               ),
