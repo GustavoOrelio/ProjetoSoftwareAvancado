@@ -1,0 +1,13 @@
+//deve possuir o formato correto
+//CPF deve possuir .
+//CPF deve possuir -
+//CPF sem máscara e sem dígito deve possuir 9 caracteres
+//deve calcular o primeiro dígito
+//deve calcular o segundo dígito
+//deve validar os dígitos
+
+/*
+1 - escreva o teste antes
+2 - codifique somente o necessário para cobrir o teste
+3 - não escreva mais testes antes de codificar
+*/
