@@ -11,3 +11,14 @@
 2 - codifique somente o necessário para cobrir o teste
 3 - não escreva mais testes antes de codificar
 */
+
+
+// não deve criar um pedido com CPF inválido
+	→ CPF válido 264.310.820-52
+// deve criar um pedido com 3 itens
+// ao adicionar um produto existente no pedido, deve alterar a quantidade sem criar um novo item
+// deve apresentar a soma de um item corretamente
+// deve permitir desconto do item de no máximo 15%
+// deve apresentar o total do pedido corretamente
+// deve validar e calcular o desconto de um cupom de desconto
+// deve adicionar um cupom de desconto
