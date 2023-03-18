@@ -57,8 +57,6 @@ void main() {
     expect(validarCPF.validarCpf('12345678910'), false);
     expect(validarCPF.validarCpf(''), false);
   });
-
 }
-
 
 //Refatorações frequentes, Codigos legiveis, Testes automatizados, Funçoes pequenas.

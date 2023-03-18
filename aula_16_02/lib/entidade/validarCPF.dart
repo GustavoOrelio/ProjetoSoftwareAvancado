@@ -1,7 +1,7 @@
 class ValidarCPF {
   ValidarCPF(String cpf);
 
-  ValidarCPF.comCPF(String CPF){
+  ValidarCPF.comCPF(String CPF) {
     ehVazio(CPF);
     ehTamanhoCorreto(CPF);
     ehFormatoCorreto(CPF);
