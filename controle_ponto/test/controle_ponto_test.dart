@@ -1,4 +1,8 @@
-import 'package:controle_ponto/model/classes.dart';
+import 'package:controle_ponto/model/funcionario.dart';
+import 'package:controle_ponto/model/gestor.dart';
+import 'package:controle_ponto/model/solicitacao.dart';
+import 'package:controle_ponto/model/tipo_gestor.dart';
+import 'package:controle_ponto/model/tipo_solicitacao.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

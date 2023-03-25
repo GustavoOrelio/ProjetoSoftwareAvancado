@@ -47,38 +47,3 @@ class Funcionario {
     bancoHoras = horasExtras;
   }
 }
-
-
-enum TipoSolicitacao { HORAS_EXTRAS, AJUSTE_HORARIO, ABONO_HORAS_FALTANTES }
-
-class Solicitacao {
-  Funcionario funcionario;
-  TipoSolicitacao tipo;
-  String justificativa;
-  String anexo;
-  bool aprovada = false;
-
-  Solicitacao(
-      {required this.funcionario,
-        required this.tipo,
-        required this.justificativa,
-        required this.anexo});
-}
-
-enum TipoGestor { NORMAL, ADMINISTRADOR }
-
-class Gestor {
-  String nome;
-  TipoGestor tipo;
-
-  Gestor({required this.nome, required this.tipo});
-
-  bool podeAprovarSolicitacao(TipoSolicitacao tipoSolicitacao) {
-    switch (tipo) {
-      case TipoGestor.NORMAL:
-        return tipoSolicitacao != TipoSolicitacao.ABONO_HORAS_FALTANTES;
-      case TipoGestor.ADMINISTRADOR:
-        return true;
-    }
-  }
-}
