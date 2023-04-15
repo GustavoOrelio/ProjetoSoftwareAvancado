@@ -1,1 +1,0 @@
-enum TipoGestor { NORMAL, ADMINISTRADOR }

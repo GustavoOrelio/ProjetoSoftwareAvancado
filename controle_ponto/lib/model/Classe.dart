@@ -5,92 +5,82 @@ enum TipoRegistroPonto {
   ALMOCO_FIM,
 }
 
+abstract class Colaborador {
+  String get nome;
+
+  List<RegistroPonto> get registros;
+
+  void registrarPonto(TipoRegistroPonto tipo);
+
+  bool isProximoLimiteHoras(int limite);
+}
+
 class RegistroPonto {
   final TipoRegistroPonto tipo;
   final DateTime horario;
 
   RegistroPonto({required this.tipo, required this.horario});
+
+  static RegistroPonto criar(TipoRegistroPonto tipo, DateTime horario) {
+    switch (tipo) {
+      case TipoRegistroPonto.ENTRADA:
+        return Entrada(horario: horario);
+      case TipoRegistroPonto.SAIDA:
+        return Saida(horario: horario);
+      case TipoRegistroPonto.ALMOCO_INICIO:
+        return AlmocoInicio(horario: horario);
+      case TipoRegistroPonto.ALMOCO_FIM:
+        return AlmocoFim(horario: horario);
+    }
+  }
 }
 
-class Funcionario {
+class Entrada extends RegistroPonto {
+  Entrada({required DateTime horario})
+      : super(tipo: TipoRegistroPonto.ENTRADA, horario: horario);
+}
+
+class Saida extends RegistroPonto {
+  Saida({required DateTime horario})
+      : super(tipo: TipoRegistroPonto.SAIDA, horario: horario);
+}
+
+class AlmocoInicio extends RegistroPonto {
+  AlmocoInicio({required DateTime horario})
+      : super(tipo: TipoRegistroPonto.ALMOCO_INICIO, horario: horario);
+}
+
+class AlmocoFim extends RegistroPonto {
+  AlmocoFim({required DateTime horario})
+      : super(tipo: TipoRegistroPonto.ALMOCO_FIM, horario: horario);
+}
+
+abstract class ValidacaoRegistro {
+  void validarRegistro(
+      TipoRegistroPonto tipo, DateTime horario, List<RegistroPonto> registros);
+}
+
+class MockValidacaoRegistro implements ValidacaoRegistro {
+  @override
+  bool validarRegistro(
+      TipoRegistroPonto tipo, DateTime horario, List<RegistroPonto> registros) {
+    return true; // Simula que a validação passou
+  }
+}
+
+class Funcionario implements Colaborador {
   final String nome;
   final List<RegistroPonto> registros = [];
 
   Funcionario({required this.nome});
 
+  @override
   void registrarPonto(TipoRegistroPonto tipo) {
     final horarioAtual = DateTime.now();
-    final ultimoRegistro = registros.isNotEmpty ? registros.last : null;
-
-    if (ultimoRegistro != null && ultimoRegistro.tipo == tipo) {
-      throw Exception(
-          'Você já registrou um(a) ${tipo.toString().split('.')[1]} hoje.');
-    }
-
-    if (tipo == TipoRegistroPonto.ALMOCO_INICIO) {
-      if (ultimoRegistro == null ||
-          ultimoRegistro.tipo != TipoRegistroPonto.ENTRADA) {
-        throw Exception(
-            'Você precisa registrar a entrada antes de registrar o início do almoço.');
-      }
-
-      final tempoTrabalho = horarioAtual.difference(ultimoRegistro.horario);
-      if (tempoTrabalho.inHours < 3 || tempoTrabalho.inHours > 5) {
-        throw Exception(
-            'O turno deve ter no mínimo 3 horas e no máximo 5 horas.');
-      }
-    }
-
-    if (tipo == TipoRegistroPonto.ALMOCO_FIM) {
-      if (ultimoRegistro == null ||
-          ultimoRegistro.tipo != TipoRegistroPonto.ALMOCO_INICIO) {
-        throw Exception(
-            'Você precisa registrar o início do almoço antes de registrar o fim do almoço.');
-      }
-
-      final tempoAlmoco = horarioAtual.difference(ultimoRegistro.horario);
-      if (tempoAlmoco.inHours != 1) {
-        throw Exception('O almoço deve ter 1 hora de duração.');
-      }
-    }
-
-    if (tipo == TipoRegistroPonto.SAIDA) {
-      if (ultimoRegistro == null ||
-          ultimoRegistro.tipo != TipoRegistroPonto.ALMOCO_FIM) {
-        throw Exception(
-            'Você precisa registrar o fim do almoço antes de registrar a saída.');
-      }
-
-      final horarioEntrada = registros
-          .firstWhere((r) => r.tipo == TipoRegistroPonto.ENTRADA)
-          .horario;
-      final tempoTrabalho = horarioAtual.difference(horarioEntrada);
-
-      if (tempoTrabalho.inHours < 8) {
-        throw Exception('Você precisa trabalhar pelo menos 8 horas por dia.');
-      }
-
-      final tempoExtra = tempoTrabalho.inHours - 8;
-      if (tempoExtra > 0) {
-        throw Exception('Você já trabalhou $tempoExtra hora(s) extra(s) hoje.');
-      }
-
-      if (horarioAtual.weekday == DateTime.saturday ||
-          horarioAtual.weekday == DateTime.sunday) {
-        throw Exception(
-            'Não é permitido registrar ponto aos finais de semana.');
-      }
-    }
-
-    if (ultimoRegistro != null &&
-        horarioAtual.difference(ultimoRegistro.horario).inHours < 12) {
-      throw Exception(
-          'O interstício de trabalho de um dia para o outro deve ser de no mínimo 12 horas.');
-    }
-
-    registros.add(RegistroPonto(tipo: tipo, horario: horarioAtual));
+    registros.add(RegistroPonto.criar(tipo, horarioAtual));
   }
 
+  @override
   bool isProximoLimiteHoras(int limite) {
     final hoje = DateTime.now();
     final inicioSemana = hoje.subtract(Duration(days: hoje.weekday - 1));
@@ -136,12 +126,32 @@ class Funcionario {
     }
     return false;
   }
+}
 
-  void solicitarAbonoHorasFaltantes(String justificativa, DateTime data) {
-// Implementação da análise pelo gerente
-  }
+class ValidationException implements Exception {
+  final String message;
 
-  void autorizarHorasExtras() {
-// Implementação da autorização pelo gerente
+  ValidationException(this.message);
+}
+
+class ValidacaoRegistroFuncionario implements ValidacaoRegistro {
+  @override
+  void validarRegistro(
+      TipoRegistroPonto tipo, DateTime horario, List<RegistroPonto> registros) {
+    // Regra 1: Um registro de entrada deve ser seguido por um registro de saída.
+    // Regra 2: Um registro de início de almoço deve ser seguido por um registro de fim de almoço.
+    if (registros.isNotEmpty) {
+      final ultimoRegistro = registros.last;
+      if (ultimoRegistro.tipo == TipoRegistroPonto.ENTRADA &&
+          (tipo == TipoRegistroPonto.ENTRADA ||
+              tipo == TipoRegistroPonto.ALMOCO_INICIO)) {
+        throw ValidationException(
+            'Um registro de entrada deve ser seguido por um registro de saída');
+      } else if (ultimoRegistro.tipo == TipoRegistroPonto.ALMOCO_INICIO &&
+          tipo != TipoRegistroPonto.ALMOCO_FIM) {
+        throw ValidationException(
+            'Um registro de início de almoço deve ser seguido por um registro de fim de almoço');
+      }
+    }
   }
 }

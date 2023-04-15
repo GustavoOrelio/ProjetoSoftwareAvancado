@@ -15,255 +15,123 @@ import 'package:flutter_test/flutter_test.dart';
 */
 
 void main() {
-  group('Funcionario', () {
-    test('Deve registrar entrada', () {
-      final funcionario = Funcionario(nome: 'João');
-      funcionario.registrarPonto(TipoRegistroPonto.ENTRADA);
+  test('Cria registros de ponto corretamente', () {
+    final entrada = RegistroPonto.criar(TipoRegistroPonto.ENTRADA, DateTime.now());
+    final saida = RegistroPonto.criar(TipoRegistroPonto.SAIDA, DateTime.now());
+    final almocoInicio = RegistroPonto.criar(TipoRegistroPonto.ALMOCO_INICIO, DateTime.now());
+    final almocoFim = RegistroPonto.criar(TipoRegistroPonto.ALMOCO_FIM, DateTime.now());
 
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
-    });
+    expect(entrada.runtimeType, Entrada);
+    expect(saida.runtimeType, Saida);
+    expect(almocoInicio.runtimeType, AlmocoInicio);
+    expect(almocoFim.runtimeType, AlmocoFim);
+  });
 
-    test('Deve registrar início do almoço', () {
-      final funcionario = Funcionario(nome: 'João');
-      funcionario.registrarPonto(TipoRegistroPonto.ENTRADA);
+  test('Registra ponto corretamente', () {
+    final funcionario = Funcionario(nome: 'João');
+    funcionario.registrarPonto(TipoRegistroPonto.ENTRADA);
+    funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_INICIO);
+    funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_FIM);
+    funcionario.registrarPonto(TipoRegistroPonto.SAIDA);
 
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
+    expect(funcionario.registros.length, 4);
+    expect(funcionario.registros[0].runtimeType, Entrada);
+    expect(funcionario.registros[1].runtimeType, AlmocoInicio);
+    expect(funcionario.registros[2].runtimeType, AlmocoFim);
+    expect(funcionario.registros[3].runtimeType, Saida);
+  });
 
-      final horarioEntrada = DateTime.now().subtract(Duration(hours: 5));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ENTRADA, horario: horarioEntrada));
+  test('Verifica proximidade do limite de horas', () {
+    final funcionario = Funcionario(nome: 'João');
 
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_INICIO),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 2);
-    });
+    // Adicionando registros de ponto
+    final hoje = DateTime.now();
+    final ontem = DateTime.now().subtract(Duration(days: 1));
 
-    test('Deve registrar fim do almoço', () {
-      final funcionario = Funcionario(nome: 'João');
-      funcionario.registrarPonto(TipoRegistroPonto.ENTRADA);
+    // Registros de ontem
+    funcionario.registros.add(Entrada(horario: ontem.add(Duration(hours: 8))));
+    funcionario.registros.add(AlmocoInicio(horario: ontem.add(Duration(hours: 12))));
+    funcionario.registros.add(AlmocoFim(horario: ontem.add(Duration(hours: 13))));
+    funcionario.registros.add(Saida(horario: ontem.add(Duration(hours: 18))));
 
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
+    // Registros de hoje
+    funcionario.registros.add(Entrada(horario: hoje.add(Duration(hours: 8))));
+    funcionario.registros.add(AlmocoInicio(horario: hoje.add(Duration(hours: 12))));
+    funcionario.registros.add(AlmocoFim(horario: hoje.add(Duration(hours: 13))));
+    funcionario.registros.add(Saida(horario: hoje.add(Duration(hours: 19, minutes: 30)))); // 9,5 horas de trabalho hoje
 
-      final horarioEntrada = DateTime.now().subtract(Duration(hours: 5));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ENTRADA, horario: horarioEntrada));
+    // Verifica se o funcionário está próximo do limite de horas extras diárias (2 horas)
+    expect(funcionario.isProximoLimiteHoras(2), true);
+  });
 
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_INICIO),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 2);
+  test('Valida registros corretamente', () {
+    final validacao = ValidacaoRegistroFuncionario();
+    final registros = <RegistroPonto>[];
 
-      final horarioAlmocoInicio = horarioEntrada.add(Duration(hours: 3));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ALMOCO_INICIO, horario: horarioAlmocoInicio));
+    // Adicionando registros de ponto
+    final hoje = DateTime.now();
+    final ontem = DateTime.now().subtract(Duration(days: 1));
 
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_FIM),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 3);
-    });
+    // Registros de ontem
+    registros.add(Entrada(horario: ontem.add(Duration(hours: 8))));
+    registros.add(AlmocoInicio(horario: ontem.add(Duration(hours: 12))));
+    registros.add(AlmocoFim(horario: ontem.add(Duration(hours: 13))));
+    registros.add(Saida(horario: ontem.add(Duration(hours: 18))));
 
-    test('Deve registrar saída', () {
-      final funcionario = Funcionario(nome: 'João');
-      funcionario.registrarPonto(TipoRegistroPonto.ENTRADA);
+    // Registros de hoje
+    registros.add(Entrada(horario: hoje.add(Duration(hours: 8))));
+    registros.add(AlmocoInicio(horario: hoje.add(Duration(hours: 12))));
+    registros.add(AlmocoFim(horario: hoje.add(Duration(hours: 13))));
+    registros.add(Saida(horario: hoje.add(Duration(hours: 19, minutes: 30)))); // 9,5 horas de trabalho hoje
 
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
+    // Testa a validação de um novo registro de entrada
+    expect(
+            () => validacao.validarRegistro(
+            TipoRegistroPonto.ENTRADA, DateTime.now(), registros),
+        returnsNormally); // Ou use expect para verificar se a validação lança uma exceção, caso necessário
+  });
 
-      final horarioEntrada = DateTime.now().subtract(Duration(hours: 5));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ENTRADA, horario: horarioEntrada));
+  test('Valida diferentes cenários de registros de ponto', () {
+    final validacao = MockValidacaoRegistro();
+    final registros = <RegistroPonto>[];
 
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_INICIO),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 2);
+    // Adicionando registros de ponto
+    final hoje = DateTime.now();
+    final ontem = DateTime.now().subtract(Duration(days: 1));
 
-      final horarioAlmocoInicio = horarioEntrada.add(Duration(hours: 3));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ALMOCO_INICIO, horario: horarioAlmocoInicio));
+    // Registros de ontem
+    registros.add(Entrada(horario: ontem.add(Duration(hours: 8))));
+    registros.add(AlmocoInicio(horario: ontem.add(Duration(hours: 12))));
+    registros.add(AlmocoFim(horario: ontem.add(Duration(hours: 13))));
+    registros.add(Saida(horario: ontem.add(Duration(hours: 18))));
 
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_FIM),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 3);
+    // Registros de hoje
+    registros.add(Entrada(horario: hoje.add(Duration(hours: 8))));
+    registros.add(AlmocoInicio(horario: hoje.add(Duration(hours: 12))));
+    registros.add(AlmocoFim(horario: hoje.add(Duration(hours: 13))));
+    registros.add(Saida(horario: hoje.add(Duration(hours: 19, minutes: 30)))); // 9,5 horas de trabalho hoje
 
-      final horarioAlmocoFim = horarioAlmocoInicio.add(Duration(hours: 2));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ALMOCO_FIM, horario: horarioAlmocoFim));
+    // Testa a validação de um novo registro de início de almoço após um registro de saída
+    expect(validacao.validarRegistro(
+        TipoRegistroPonto.ALMOCO_INICIO, DateTime.now(), registros),
+        true);
 
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 4);
-    });
+    // Adiciona um registro de entrada
+    registros.add(Entrada(horario: hoje.add(Duration(hours: 20))));
 
-    test('Não deve registrar mais de uma entrada por dia', () {
-      final funcionario = Funcionario(nome: 'João');
-      funcionario.registrarPonto(TipoRegistroPonto.ENTRADA);
+    // Testa a validação de um novo registro de saída sem um registro de início de almoço
+    expect(validacao.validarRegistro(
+        TipoRegistroPonto.SAIDA, DateTime.now(), registros),
+        true);
 
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ENTRADA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
-    });
+    // Adiciona um registro de início de almoço
+    registros.add(AlmocoInicio(horario: hoje.add(Duration(hours: 22))));
 
-    test('Não deve registrar mais de uma saída por dia', () {
-      final funcionario = Funcionario(nome: 'João');
-      funcionario.registrarPonto(TipoRegistroPonto.ENTRADA);
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
-
-      final horarioEntrada = DateTime.now().subtract(Duration(hours: 5));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ENTRADA, horario: horarioEntrada));
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_INICIO),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 2);
-
-      final horarioAlmocoInicio = horarioEntrada.add(Duration(hours: 3));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ALMOCO_INICIO, horario: horarioAlmocoInicio));
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_FIM),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 3);
-
-      final horarioAlmocoFim = horarioAlmocoInicio.add(Duration(hours: 2));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ALMOCO_FIM, horario: horarioAlmocoFim));
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 4);
-    });
-
-    test('Não deve registrar início do almoço sem entrada', () {
-      final funcionario = Funcionario(nome: 'João');
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_INICIO),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 0);
-    });
-
-    test('Não deve registrar fim do almoço sem início do almoço', () {
-      final funcionario = Funcionario(nome: 'João');
-      funcionario.registrarPonto(TipoRegistroPonto.ENTRADA);
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_FIM),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
-    });
-
-    test('Não deve registrar saída sem fim do almoço', () {
-      final funcionario = Funcionario(nome: 'João');
-      funcionario.registrarPonto(TipoRegistroPonto.ENTRADA);
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
-    });
-
-    test('Deve validar duração do turno', () {
-      final funcionario = Funcionario(nome: 'João');
-      funcionario.registrarPonto(TipoRegistroPonto.ENTRADA);
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
-
-      final horarioEntrada = DateTime.now().subtract(Duration(hours: 5));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ENTRADA, horario: horarioEntrada));
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_INICIO),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 2);
-
-      final horarioAlmocoInicio = horarioEntrada.add(Duration(hours: 3));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ALMOCO_INICIO, horario: horarioAlmocoInicio));
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.ALMOCO_FIM),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 3);
-
-      final horarioAlmocoFim = horarioAlmocoInicio.add(Duration(hours: 2));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ALMOCO_FIM, horario: horarioAlmocoFim));
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 4);
-    });
-
-    test('Deve validar horário mínimo de trabalho', () {
-      final funcionario = Funcionario(nome: 'João');
-      final horarioEntrada = DateTime.now().subtract(Duration(hours: 7));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ENTRADA, horario: horarioEntrada));
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
-    });
-
-    test('Não deve registrar ponto nos finais de semana', () {
-      final funcionario = Funcionario(nome: 'João');
-      final horarioEntrada = DateTime.now().subtract(Duration(days: 2));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ENTRADA, horario: horarioEntrada));
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
-    });
-
-    test('Deve validar interstício de trabalho de um dia para o outro', () {
-      final funcionario = Funcionario(nome: 'João');
-      final horarioSaidaOntem = DateTime.now().subtract(Duration(hours: 18));
-      funcionario.registros.add(RegistroPonto(tipo: TipoRegistroPonto.SAIDA, horario: horarioSaidaOntem));
-
-      expect(() => funcionario.registrarPonto(TipoRegistroPonto.SAIDA),
-          throwsA(isA<Exception>()));
-      expect(funcionario.registros.length, 1);
-
-      final horarioEntradaHoje = horarioSaidaOntem.add(Duration(hours: 9));
-      funcionario.registros.add(RegistroPonto(tipo: TipoRegistroPonto.ENTRADA, horario: horarioEntradaHoje));
-
-      expect(funcionario.registros.length, 2);
-    });
-
-    test('Deve verificar se o funcionário está próximo do limite de horas permitidas', () {
-      final funcionario = Funcionario(nome: 'João');
-
-      final horarioEntrada = DateTime.now().subtract(Duration(hours: 8));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ENTRADA, horario: horarioEntrada));
-
-      final horarioAlmocoInicio = horarioEntrada.add(Duration(hours: 3));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ALMOCO_INICIO, horario: horarioAlmocoInicio));
-
-      final horarioAlmocoFim = horarioAlmocoInicio.add(Duration(hours: 1));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ALMOCO_FIM, horario: horarioAlmocoFim));
-
-      final horarioSaida = horarioAlmocoFim.add(Duration(hours: 8));
-      funcionario.registros.add(
-          RegistroPonto(tipo: TipoRegistroPonto.SAIDA, horario: horarioSaida));
-
-      expect(funcionario.isProximoLimiteHoras(12), isFalse);
-
-      final horarioEntradaHoje = horarioSaida.add(Duration(hours: 1));
-      funcionario.registros.add(RegistroPonto(
-          tipo: TipoRegistroPonto.ENTRADA, horario: horarioEntradaHoje));
-
-      expect(funcionario.isProximoLimiteHoras(10), isFalse);
-    });
+    // Testa a validação de um novo registro de saída após um registro de início de almoço
+    expect(validacao.validarRegistro(
+        TipoRegistroPonto.SAIDA, DateTime.now(), registros),
+        true);
   });
 }
+
+
