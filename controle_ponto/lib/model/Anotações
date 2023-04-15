@@ -1,0 +1,36 @@
+Encapsulamento: A classe Colaborador possui métodos e atributos que são acessíveis apenas dentro da
+própria classe, como nome e registros. O mesmo acontece com as outras classes.
+
+Abstração: A classe Colaborador é uma classe abstrata, que define a interface para as classes que
+a implementam. As outras classes no código também são abstrações de RegistroPonto e ValidacaoRegistro.
+
+Polimorfismo: As classes Entrada, Saida, AlmocoInicio e AlmocoFim herdam de RegistroPonto, e a
+classe ValidacaoRegistroFuncionario implementa a interface ValidacaoRegistro. Essa é uma forma
+de aplicar o polimorfismo, permitindo que objetos de classes diferentes possam ser tratados da
+mesma maneira.
+
+Herança: As classes Entrada, Saida, AlmocoInicio e AlmocoFim herdam de RegistroPonto, possibilitando
+a reutilização de código.
+
+Princípios do SOLID presentes no código:
+
+Single Responsibility Principle (SRP): As classes do código têm responsabilidades únicas e bem
+definidas. Por exemplo, a classe Funcionario é responsável por manter os registros de ponto de
+um funcionário, e a classe ValidacaoRegistroFuncionario é responsável por validar os registros
+de ponto do funcionário.
+
+Open/Closed Principle (OCP): O código usa a herança para permitir que novas implementações de
+RegistroPonto possam ser adicionadas sem alterar o código existente.
+
+Liskov Substitution Principle (LSP): As classes filhas de RegistroPonto podem ser usadas em
+qualquer lugar em que RegistroPonto é usado, sem quebrar o comportamento esperado.
+
+Interface Segregation Principle (ISP): A interface ValidacaoRegistro tem apenas um método,
+validarRegistro(), que é usado por todas as classes que a implementam. Isso significa que as
+classes que não precisam de todas as funcionalidades de ValidacaoRegistro não são obrigadas a
+implementá-las.
+
+Dependency Inversion Principle (DIP): O código depende de abstrações (Colaborador, RegistroPonto
+e ValidacaoRegistro) em vez de classes concretas, permitindo que diferentes implementações possam
+ser usadas sem alterar o código existente. Além disso, a classe Funcionario depende da interface
+ValidacaoRegistro, em vez de depender diretamente da classe concreta ValidacaoRegistroFuncionario.

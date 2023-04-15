@@ -56,7 +56,7 @@ class AlmocoFim extends RegistroPonto {
 }
 
 abstract class ValidacaoRegistro {
-  void validarRegistro(
+  bool validarRegistro(
       TipoRegistroPonto tipo, DateTime horario, List<RegistroPonto> registros);
 }
 
@@ -136,22 +136,14 @@ class ValidationException implements Exception {
 
 class ValidacaoRegistroFuncionario implements ValidacaoRegistro {
   @override
-  void validarRegistro(
+  bool validarRegistro(
       TipoRegistroPonto tipo, DateTime horario, List<RegistroPonto> registros) {
-    // Regra 1: Um registro de entrada deve ser seguido por um registro de saída.
-    // Regra 2: Um registro de início de almoço deve ser seguido por um registro de fim de almoço.
-    if (registros.isNotEmpty) {
-      final ultimoRegistro = registros.last;
-      if (ultimoRegistro.tipo == TipoRegistroPonto.ENTRADA &&
-          (tipo == TipoRegistroPonto.ENTRADA ||
-              tipo == TipoRegistroPonto.ALMOCO_INICIO)) {
-        throw ValidationException(
-            'Um registro de entrada deve ser seguido por um registro de saída');
-      } else if (ultimoRegistro.tipo == TipoRegistroPonto.ALMOCO_INICIO &&
-          tipo != TipoRegistroPonto.ALMOCO_FIM) {
-        throw ValidationException(
-            'Um registro de início de almoço deve ser seguido por um registro de fim de almoço');
-      }
-    }
+    // Implementar as validações específicas do funcionário
+    // Exemplo: Verifica se já existe um registro do mesmo tipo no mesmo dia
+    return registros.every((r) => r.tipo != tipo || !isSameDay(r.horario, horario));
+  }
+
+  bool isSameDay(DateTime d1, DateTime d2) {
+    return d1.year == d2.year && d1.month == d2.month && d1.day == d2.day;
   }
 }
