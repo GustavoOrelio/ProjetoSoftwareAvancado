@@ -1,10 +1,9 @@
-import 'package:beauty_time/view/detalhes_cliente.dart';
+import 'package:beauty_time/domain/dto/cliente_dto.dart';
+import 'package:beauty_time/domain/porta/i_cliente.dart';
+import 'package:beauty_time/view/cliente/adicionar_cliente.dart';
+import 'package:beauty_time/view/cliente/detalhes_cliente.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-import '../domain/dto/cliente_dto.dart';
-import '../domain/porta/i_cliente.dart';
-import 'adicionar_cliente.dart';
 
 class ListaClientesPage extends StatefulWidget {
   final ClienteRepository clienteRepository;
@@ -22,7 +21,7 @@ class _ListaClientesPageState extends State<ListaClientesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Clientes'),
+        title: const Text('Clientes'),
       ),
       body: StreamBuilder(
         stream: widget._streamController.stream,
@@ -39,7 +38,7 @@ class _ListaClientesPageState extends State<ListaClientesPage> {
                         title: Text(cliente.nome),
                         subtitle: Text(cliente.telefone),
                         trailing: IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           onPressed: () async {
                             await widget.clienteRepository
                                 .deleteCliente(cliente.id);
@@ -61,9 +60,9 @@ class _ListaClientesPageState extends State<ListaClientesPage> {
                   },
                 );
               } else if (snapshot.hasError) {
-                return Center(child: Text('Erro ao carregar clientes'));
+                return const Center(child: Text('Erro ao carregar clientes'));
               }
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             },
           );
         },
@@ -80,7 +79,7 @@ class _ListaClientesPageState extends State<ListaClientesPage> {
           );
           widget._streamController.add(null);
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

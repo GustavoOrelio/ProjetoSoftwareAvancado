@@ -32,17 +32,17 @@ class _DetalhesClientePageState extends State<DetalhesClientePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalhes do Cliente'),
+        title: const Text('Detalhes do Cliente'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
               TextFormField(
                 controller: _nomeController,
-                decoration: InputDecoration(labelText: 'Nome'),
+                decoration: const InputDecoration(labelText: 'Nome'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, insira o nome';
@@ -52,7 +52,7 @@ class _DetalhesClientePageState extends State<DetalhesClientePage> {
               ),
               TextFormField(
                 controller: _telefoneController,
-                decoration: InputDecoration(labelText: 'Telefone'),
+                decoration: const InputDecoration(labelText: 'Telefone'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, insira o telefone';
@@ -64,7 +64,7 @@ class _DetalhesClientePageState extends State<DetalhesClientePage> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Processando dados...')),
+                      const SnackBar(content: Text('Processando dados...')),
                     );
                     await widget.clienteRepository.updateCliente(
                       ClienteDTO(
