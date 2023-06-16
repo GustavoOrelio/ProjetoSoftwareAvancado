@@ -1,10 +1,10 @@
-import 'package:beauty_time/domain/dto/cliente_dto.dart';
-import 'package:beauty_time/domain/porta/i_cliente.dart';
+import 'package:beauty_time/domain/dto/funcionario_dto.dart';
+import 'package:beauty_time/domain/porta/i_funcionario.dart';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class ClienteDAO implements ClienteRepository {
+class FuncionarioDAO implements FuncionarioRepository {
   Database? _database;
 
   Future<Database> get database async {
@@ -15,10 +15,10 @@ class ClienteDAO implements ClienteRepository {
 
   Future<Database> _initDatabase() async {
     return openDatabase(
-      join(await getDatabasesPath(), 'cliente.db'),
+      join(await getDatabasesPath(), 'funcionario.db'),
       onCreate: (db, version) {
         return db.execute(
-          "CREATE TABLE clientes(id INTEGER PRIMARY KEY, nome TEXT, telefone TEXT)",
+          "CREATE TABLE funcionarios(id INTEGER PRIMARY KEY, nome TEXT, telefone TEXT)",
         );
       },
       version: 1,
@@ -26,24 +26,24 @@ class ClienteDAO implements ClienteRepository {
   }
 
   @override
-  Future<void> saveCliente(ClienteDTO cliente) async {
+  Future<void> saveFuncionario(FuncionarioDTO funcionario) async {
     final db = await database;
 
     await db.insert(
-      'clientes',
-      cliente.toMap(),
+      'funcionarios',
+      funcionario.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
   @override
-  Future<List<ClienteDTO>> getClientes() async {
+  Future<List<FuncionarioDTO>> getFuncionarios() async {
     final db = await database;
 
-    final List<Map<String, dynamic>> maps = await db.query('clientes');
+    final List<Map<String, dynamic>> maps = await db.query('funcionarios');
 
     return List.generate(maps.length, (i) {
-      return ClienteDTO(
+      return FuncionarioDTO(
         id: maps[i]['id'],
         nome: maps[i]['nome'],
         telefone: maps[i]['telefone'],
@@ -52,17 +52,17 @@ class ClienteDAO implements ClienteRepository {
   }
 
   @override
-  Future<ClienteDTO> getCliente(int id) async {
+  Future<FuncionarioDTO> getFuncionario(int id) async {
     final db = await database;
 
     List<Map<String, dynamic>> maps = await db.query(
-      'clientes',
+      'funcionarios',
       where: 'id = ?',
       whereArgs: [id],
     );
 
     if (maps.length > 0) {
-      return ClienteDTO(
+      return FuncionarioDTO(
         id: maps[0]['id'],
         nome: maps[0]['nome'],
         telefone: maps[0]['telefone'],
@@ -73,23 +73,23 @@ class ClienteDAO implements ClienteRepository {
   }
 
   @override
-  Future<void> updateCliente(ClienteDTO cliente) async {
+  Future<void> updateFuncionario(FuncionarioDTO funcionario) async {
     final db = await database;
 
     await db.update(
-      'clientes',
-      cliente.toMap(),
+      'funcionarios',
+      funcionario.toMap(),
       where: "id = ?",
-      whereArgs: [cliente.id],
+      whereArgs: [funcionario.id],
     );
   }
 
   @override
-  Future<void> deleteCliente(int id) async {
+  Future<void> deleteFuncionario(int id) async {
     final db = await database;
 
     await db.delete(
-      'clientes',
+      'funcionarios',
       where: "id = ?",
       whereArgs: [id],
     );
