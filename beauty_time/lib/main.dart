@@ -1,7 +1,9 @@
 import 'package:beauty_time/infrastructure/dao_cliente.dart';
+import 'package:beauty_time/infrastructure/dao_servico.dart';
 import 'package:beauty_time/view/agendamento/agendamento_page.dart';
 import 'package:beauty_time/view/cliente/lista_cliente.dart';
 import 'package:beauty_time/view/funcionario/lista_funcionario.dart';
+import 'package:beauty_time/view/servico/lista_servico.dart';
 import 'package:flutter/material.dart';
 
 import 'infrastructure/dao_funcionario.dart';
@@ -69,6 +71,16 @@ class MyApp extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ListaFuncionariosPage(funcionarioRepository: FuncionarioDAO())),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.task),
+              title: Text('Serviços'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListaServicosPage(servicoRepository: ServicoDAO())),
                 );
               },
             ),
