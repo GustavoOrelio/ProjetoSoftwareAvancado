@@ -1,6 +1,6 @@
 import 'package:beauty_time/infrastructure/dao_cliente.dart';
 import 'package:beauty_time/infrastructure/dao_servico.dart';
-import 'package:beauty_time/view/agendamento/agendamento_page.dart';
+import 'package:beauty_time/view/agendamento/agendamento_list_screen.dart';
 import 'package:beauty_time/view/cliente/lista_cliente.dart';
 import 'package:beauty_time/view/funcionario/lista_funcionario.dart';
 import 'package:beauty_time/view/servico/lista_servico.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AgendamentosPage()),
+                  MaterialPageRoute(builder: (context) => AgendamentoListScreen()),
                 );
               },
             ),

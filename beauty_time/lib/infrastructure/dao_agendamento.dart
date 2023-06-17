@@ -1,16 +1,31 @@
 import 'package:sqflite/sqflite.dart';
-import '../domain/core-private/agendamento.dart';
+import 'package:path/path.dart';
+
+import '../domain/dto/agendamento_dto.dart';
 import '../domain/porta/i_agendamento.dart';
 
+class AgendamentoRepository implements IAgendamentoRepository {
+  late Database _database;
 
-class AgendamentoSqfliteRepository implements AgendamentoRepository {
-  final Database database;
+  AgendamentoRepository() {
+    initDB();
+  }
 
-  AgendamentoSqfliteRepository(this.database);
+  Future<void> initDB() async {
+    _database = await openDatabase(
+      join(await getDatabasesPath(), 'agendamento.db'),
+      onCreate: (db, version) {
+        return db.execute(
+          "CREATE TABLE agendamentos(id INTEGER PRIMARY KEY, clienteId INTEGER, funcionarioId INTEGER, servicoId INTEGER, dataHora TEXT)",
+        );
+      },
+      version: 1,
+    );
+  }
 
   @override
-  Future<void> adicionarAgendamento(Agendamento agendamento) async {
-    await database.insert(
+  Future<int> createAgendamento(AgendamentoDTO agendamento) async {
+    return _database.insert(
       'agendamentos',
       agendamento.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -18,35 +33,30 @@ class AgendamentoSqfliteRepository implements AgendamentoRepository {
   }
 
   @override
-  Future<void> removerAgendamento(int id) async {
-    await database.delete(
-      'agendamentos',
-      where: "id = ?",
-      whereArgs: [id],
-    );
-  }
-
-  @override
-  Future<List<Agendamento>> buscarAgendamentos() async {
-    final List<Map<String, dynamic>> maps = await database.query('agendamentos');
+  Future<List<AgendamentoDTO>> fetchAgendamentos() async {
+    final List<Map<String, dynamic>> maps = await _database.query('agendamentos');
 
     return List.generate(maps.length, (i) {
-      return Agendamento(
-        id: maps[i]['id'],
-        nomeCliente: maps[i]['nomeCliente'],
-        nomeFuncionario: maps[i]['nomeFuncionario'],
-        dataHora: DateTime.parse(maps[i]['dataHora']),
-      );
+      return AgendamentoDTO.fromMap(maps[i]);
     });
   }
 
   @override
-  Future<void> atualizarAgendamento(Agendamento agendamento) async {
-    await database.update(
+  Future<void> updateAgendamento(AgendamentoDTO agendamento) async {
+    await _database.update(
       'agendamentos',
       agendamento.toMap(),
       where: "id = ?",
       whereArgs: [agendamento.id],
+    );
+  }
+
+  @override
+  Future<void> deleteAgendamento(int id) async {
+    await _database.delete(
+      'agendamentos',
+      where: "id = ?",
+      whereArgs: [id],
     );
   }
 }
