@@ -1,5 +1,5 @@
 class AgendamentoDTO {
-  final int id;
+  late final String id;
   final DateTime dataHora;
   final String clienteId;
   final String funcionarioId;
@@ -15,10 +15,10 @@ class AgendamentoDTO {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'datahora': dataHora,
-      'cliente': clienteId,
-      'funcionario': funcionarioId,
-      'servico': servicoId,
+      'clienteId': clienteId,
+      'funcionarioId': funcionarioId,
+      'servicoId': servicoId,
+      'dataHora': dataHora.toString(),
     };
   }
 
