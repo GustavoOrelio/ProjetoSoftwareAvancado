@@ -1,4 +1,7 @@
+import 'package:beauty_time/infrastructure/funcionario_sqlite_adapter.dart';
+import 'package:beauty_time/interface_grafica/funcionario_list_screen.dart';
 import 'package:beauty_time/view/cliente_view.dart';
+import 'package:beauty_time/view/funcionario_view.dart';
 import 'package:flutter/material.dart';
 
 import 'infrastructure/cliente_sqlite_adapter.dart';
@@ -22,8 +25,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var clienteRepository = ClienteSQLiteAdapter();
-
     var clienteView = ClienteView(clienteRepository: clienteRepository);
+
+    var funcionarioRepository = FuncionarioSQLiteAdapter();
+    var funcionarioView = FuncionarioView(funcionarioRepository: funcionarioRepository);
 
     return Scaffold(
       appBar: AppBar(
@@ -55,6 +60,19 @@ class MyApp extends StatelessWidget {
                       builder: (context) => ClienteListScreen(
                             clienteView: clienteView,
                           )),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text('Funcionario'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FuncionarioListScreen(
+                        funcionarioView: funcionarioView,
+                      )),
                 );
               },
             ),
