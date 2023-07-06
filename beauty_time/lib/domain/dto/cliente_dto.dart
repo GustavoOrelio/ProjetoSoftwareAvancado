@@ -1,5 +1,5 @@
 class ClienteDTO {
-  final int id;
+  final String id;
   final String nome;
   final String telefone;
 
@@ -11,13 +11,5 @@ class ClienteDTO {
       'nome': nome,
       'telefone': telefone,
     };
-  }
-
-  factory ClienteDTO.fromMap(Map<String, dynamic> map) {
-    return ClienteDTO(
-      id: map['id'],
-      nome: map['nome'],
-      telefone: map['telefone'],
-    );
   }
 }

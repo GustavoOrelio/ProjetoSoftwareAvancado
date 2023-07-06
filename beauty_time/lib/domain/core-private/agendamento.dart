@@ -1,57 +1,49 @@
-import 'cliente.dart';
-import 'funcionario.dart';
-import 'servico.dart';
-
 class Agendamento {
-  final int id;
-  final Cliente cliente;
-  final Funcionario funcionario;
-  final Servico servico;
-  DateTime dataHora;
+  final String id;
+  final String clienteId;
+  final String funcionarioId;
+  final String servicoId;
+  final DateTime dataHora;
 
   Agendamento({
     required this.id,
-    required this.cliente,
-    required this.funcionario,
-    required this.servico,
+    required this.clienteId,
+    required this.funcionarioId,
+    required this.servicoId,
     required this.dataHora,
   }) {
-    if (!isHorarioComercial(dataHora)) {
-      throw Exception('Agendamento deve ser dentro do horário comercial.');
+    // Regra de negócio 1: A data e hora do agendamento devem ser no futuro.
+    if (dataHora.isBefore(DateTime.now())) {
+      throw Exception('A data e hora do agendamento devem ser no futuro.');
     }
 
-    if (!funcionario.estaDisponivelNoHorario(dataHora)) {
-      throw Exception('Funcionário não está disponível no horário escolhido.');
+    // Regra de negócio 2: O ID do cliente, funcionário e serviço não devem ser vazios.
+    if (clienteId.isEmpty || funcionarioId.isEmpty || servicoId.isEmpty) {
+      throw Exception(
+          'O ID do cliente, funcionário e serviço não devem ser vazios.');
     }
 
-    if (!servico.estaDisponivelNoHorario(dataHora)) {
-      throw Exception('Serviço não está disponível no horário escolhido.');
+    // Regra de negócio 3: A data do agendamento não pode ser um feriado.
+    if (isHoliday(dataHora)) {
+      throw Exception('A data do agendamento não pode ser um feriado.');
+    }
+
+    // Regra de negócio 4: A data do agendamento deve ser durante o horário de funcionamento do salão.
+    if (!isBusinessHours(dataHora)) {
+      throw Exception(
+          'A data do agendamento deve ser durante o horário de funcionamento do salão.');
     }
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'clienteId': cliente,
-      'funcionarioId': funcionario,
-      'servicoId': servico,
-      'dataHora': dataHora.toString(),
-    };
+  bool isHoliday(DateTime date) {
+    // Por exemplo, vamos supor que o salão está fechado no Natal.
+    DateTime natal = DateTime(date.year, 12, 25);
+    return date.day == natal.day && date.month == natal.month;
   }
 
-  bool isHorarioComercial(DateTime dataHora) {
-    int inicioHorarioComercial = 8;
-    int fimHorarioComercial = 18;
-
-    if (dataHora.weekday < 1 || dataHora.weekday > 5) {
-      return false;
-    }
-
-    if (dataHora.hour < inicioHorarioComercial ||
-        dataHora.hour > fimHorarioComercial) {
-      return false;
-    }
-
-    return true;
+  bool isBusinessHours(DateTime date) {
+    // Por exemplo, vamos supor que o salão está aberto das 9h às 17h.
+    int hour = date.hour;
+    return hour >= 9 && hour < 17;
   }
 }

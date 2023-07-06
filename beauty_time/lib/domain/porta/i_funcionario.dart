@@ -1,13 +1,9 @@
-import 'package:beauty_time/domain/dto/funcionario_dto.dart';
+import '../dto/funcionario_dto.dart';
 
 abstract class FuncionarioRepository {
-  Future<void> saveFuncionario(FuncionarioDTO funcionario);
+  Future<void> adicionarFuncionario(FuncionarioDTO funcionario);
 
-  Future<List<FuncionarioDTO>> getFuncionarios();
+  Future<void> removerFuncionario(String id);
 
-  Future<FuncionarioDTO> getFuncionario(int id);
-
-  Future<void> updateFuncionario(FuncionarioDTO funcionario);
-
-  Future<void> deleteFuncionario(int id);
+  Future<List<FuncionarioDTO>> obterTodosFuncionarios();
 }

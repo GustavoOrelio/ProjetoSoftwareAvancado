@@ -1,8 +1,9 @@
 import '../dto/agendamento_dto.dart';
 
-abstract class IAgendamentoRepository {
-  Future<List<AgendamentoDTO>> fetchAgendamentos();
-  Future<void> createAgendamento(AgendamentoDTO agendamentoDTO);
-  Future<void> updateAgendamento(AgendamentoDTO agendamentoDTO);
-  Future<void> deleteAgendamento(int id);
+abstract class AgendamentoRepository {
+  Future<void> adicionarAgendamento(AgendamentoDTO agendamento);
+
+  Future<void> removerAgendamento(String id);
+
+  Future<List<AgendamentoDTO>> obterTodosAgendamentos();
 }

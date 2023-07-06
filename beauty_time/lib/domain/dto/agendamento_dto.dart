@@ -1,16 +1,17 @@
 class AgendamentoDTO {
-  late final String id;
-  final DateTime dataHora;
+  final String id;
   final String clienteId;
   final String funcionarioId;
   final String servicoId;
+  final DateTime dataHora;
 
-  AgendamentoDTO(
-      {required this.id,
-      required this.dataHora,
-      required this.clienteId,
-      required this.funcionarioId,
-      required this.servicoId});
+  AgendamentoDTO({
+    required this.id,
+    required this.clienteId,
+    required this.funcionarioId,
+    required this.servicoId,
+    required this.dataHora,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -18,17 +19,17 @@ class AgendamentoDTO {
       'clienteId': clienteId,
       'funcionarioId': funcionarioId,
       'servicoId': servicoId,
-      'dataHora': dataHora.toString(),
+      'dataHora': dataHora.toIso8601String(),
     };
   }
 
-  factory AgendamentoDTO.fromMap(Map<String, dynamic> map) {
+  static AgendamentoDTO fromMap(Map<String, dynamic> map) {
     return AgendamentoDTO(
       id: map['id'],
-      dataHora: map['datahora'],
-      clienteId: map['cliente'],
-      funcionarioId: map['funcionario'],
-      servicoId: map['servico'],
+      clienteId: map['clienteId'],
+      funcionarioId: map['funcionarioId'],
+      servicoId: map['servicoId'],
+      dataHora: DateTime.parse(map['dataHora']),
     );
   }
 }
