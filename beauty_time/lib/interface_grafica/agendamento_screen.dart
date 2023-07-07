@@ -132,6 +132,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                 } else if (snapshot.error != null) {
                   return Text('Ocorreu um erro!');
                 } else {
+                  final realFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
                   return DropdownButtonFormField<String>(
                     decoration: InputDecoration(labelText: 'Serviço'),
                     value: servicoId,
@@ -144,7 +145,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                         .map<DropdownMenuItem<String>>((ServicoDTO servico) {
                       return DropdownMenuItem<String>(
                         value: servico.id,
-                        child: Text(servico.nome),
+                        child: Text('${servico.nome} - ${realFormat.format(servico.preco)}'),
                       );
                     }).toList(),
                   );
@@ -160,7 +161,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                 ),
               ),
               controller: TextEditingController(
-                text: DateFormat('HH:mm - dd/MM/yyyy').format(dataHora),
+                text: DateFormat('dd/MM/yyyy - HH:mm').format(dataHora),
               ),
               readOnly: true,
             ),

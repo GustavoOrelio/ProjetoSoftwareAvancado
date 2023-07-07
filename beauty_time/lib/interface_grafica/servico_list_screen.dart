@@ -1,5 +1,6 @@
 import 'package:beauty_time/interface_grafica/servico_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../domain/dto/servico_dto.dart';
 import '../view/servico_view.dart';
@@ -16,6 +17,8 @@ class ServicoListScreen extends StatefulWidget {
 class _ServicoListScreenState extends State<ServicoListScreen> {
   @override
   Widget build(BuildContext context) {
+    final realFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Serviços'),
@@ -45,6 +48,7 @@ class _ServicoListScreenState extends State<ServicoListScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (ctx, i) => ListTile(
                 title: Text(snapshot.data![i].nome), // Aqui você pode querer mostrar o nome do serviço.
+                subtitle: Text(realFormat.format(snapshot.data![i].preco)), // Aqui você mostra o preço do serviço.
                 trailing: IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import '../view/cliente_view.dart';
 
 class ClienteScreen extends StatelessWidget {
@@ -25,6 +25,10 @@ class ClienteScreen extends StatelessWidget {
           TextField(
             controller: _telefoneController,
             decoration: InputDecoration(labelText: 'Telefone'),
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              MaskedInputFormatter('(##) #####-####'),
+            ],
           ),
           ElevatedButton(
             child: Text('Adicionar Cliente'),

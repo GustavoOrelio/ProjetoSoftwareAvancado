@@ -13,6 +13,7 @@ import 'infrastructure/servico_sqlite_adapter.dart';
 import 'infrastructure/sms_service.dart';
 import 'interface_grafica/agendamento_list_screen.dart';
 import 'interface_grafica/cliente_list_screen.dart';
+import 'interface_grafica/home_screen.dart';
 
 void main() {
   runApp(MyFlutterApp());
@@ -120,8 +121,10 @@ class MyApp extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(
-        child: Text('Página Inicial'),
+      body: HomePage( // Aqui você chama a HomePage
+        agendamentoView: agendamentoView,
+        clienteView: clienteView,
+        servicoView: servicoView,
       ),
     );
   }

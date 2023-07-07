@@ -2,6 +2,7 @@ import 'package:beauty_time/view/cliente_view.dart';
 import 'package:beauty_time/view/funcionario_view.dart';
 import 'package:beauty_time/view/servico_view.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../domain/dto/agendamento_dto.dart';
 import '../domain/dto/cliente_dto.dart';
@@ -80,7 +81,7 @@ class _AgendamentoListScreenState extends State<AgendamentoListScreen> {
                         } else {
                           return ListTile(
                             title: Text('${snapshotCliente.data!.nome} - ${snapshotServico.data!.nome}'),
-                            subtitle: Text(snapshot.data![i].dataHora.toString()),
+                            subtitle: Text(DateFormat('dd/MM/yyyy - HH:mm').format(snapshot.data![i].dataHora)),
                             trailing: IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () {
