@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'infrastructure/agendamento_sqlite_adapter.dart';
 import 'infrastructure/cliente_sqlite_adapter.dart';
 import 'infrastructure/servico_sqlite_adapter.dart';
+import 'infrastructure/sms_service.dart';
 import 'interface_grafica/agendamento_list_screen.dart';
 import 'interface_grafica/cliente_list_screen.dart';
 
@@ -30,19 +31,16 @@ class MyFlutterApp extends StatelessWidget {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var clienteRepository = ClienteSQLiteAdapter();
-    var clienteView = ClienteView(clienteRepository: clienteRepository);
-
-    var funcionarioRepository = FuncionarioSQLiteAdapter();
-    var funcionarioView =
-        FuncionarioView(funcionarioRepository: funcionarioRepository);
-
-    var servicoRepository = ServicoSQLiteAdapter();
-    var servicoView = ServicoView(servicoRepository: servicoRepository);
-
     var agendamentoRepository = AgendamentoSQLiteAdapter();
-    var agendamentoView =
-        AgendamentoView(agendamentoRepository: agendamentoRepository);
+    var clienteRepository = ClienteSQLiteAdapter();
+    var funcionarioRepository = FuncionarioSQLiteAdapter();
+    var servicoRepository = ServicoSQLiteAdapter();
+    var smsService = SMSServiceImpl();
+
+    var agendamentoView = AgendamentoView(agendamentoRepository: agendamentoRepository, smsService: smsService);
+    var clienteView = ClienteView(clienteRepository: clienteRepository);
+    var funcionarioView = FuncionarioView(funcionarioRepository: funcionarioRepository);
+    var servicoView = ServicoView(servicoRepository: servicoRepository);
 
     return Scaffold(
       appBar: AppBar(

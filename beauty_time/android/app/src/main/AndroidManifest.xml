@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.orelio.beautytime.beauty_time">
+
+    <uses-permission android:name="android.permission.SEND_SMS"/>
    <application
         android:label="beauty_time"
         android:name="${applicationName}"

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../domain/dto/cliente_dto.dart';
 import '../domain/dto/funcionario_dto.dart';
@@ -31,6 +32,34 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
   String? servicoId;
   DateTime dataHora = DateTime.now();
 
+  Future<void> _selecionarDataHora() async {
+    final DateTime? dataEscolhida = await showDatePicker(
+      context: context,
+      initialDate: dataHora,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+    );
+
+    if (dataEscolhida != null) {
+      final TimeOfDay? horaEscolhida = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(dataHora),
+      );
+
+      if (horaEscolhida != null) {
+        setState(() {
+          dataHora = DateTime(
+            dataEscolhida.year,
+            dataEscolhida.month,
+            dataEscolhida.day,
+            horaEscolhida.hour,
+            horaEscolhida.minute,
+          );
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +77,8 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                 } else if (snapshot.error != null) {
                   return Text('Ocorreu um erro!');
                 } else {
-                  return DropdownButton<String>(
+                  return DropdownButtonFormField<String>(
+                    decoration: InputDecoration(labelText: 'Cliente'),
                     value: clienteId,
                     onChanged: (String? newValue) {
                       setState(() {
@@ -74,7 +104,8 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                 } else if (snapshot.error != null) {
                   return Text('Ocorreu um erro!');
                 } else {
-                  return DropdownButton<String>(
+                  return DropdownButtonFormField<String>(
+                    decoration: InputDecoration(labelText: 'Funcionário'),
                     value: funcionarioId,
                     onChanged: (String? newValue) {
                       setState(() {
@@ -82,12 +113,12 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                       });
                     },
                     items: snapshot.data!.map<DropdownMenuItem<String>>(
-                        (FuncionarioDTO funcionario) {
-                      return DropdownMenuItem<String>(
-                        value: funcionario.id,
-                        child: Text(funcionario.nome),
-                      );
-                    }).toList(),
+                            (FuncionarioDTO funcionario) {
+                          return DropdownMenuItem<String>(
+                            value: funcionario.id,
+                            child: Text(funcionario.nome),
+                          );
+                        }).toList(),
                   );
                 }
               },
@@ -101,7 +132,8 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                 } else if (snapshot.error != null) {
                   return Text('Ocorreu um erro!');
                 } else {
-                  return DropdownButton<String>(
+                  return DropdownButtonFormField<String>(
+                    decoration: InputDecoration(labelText: 'Serviço'),
                     value: servicoId,
                     onChanged: (String? newValue) {
                       setState(() {
@@ -118,6 +150,19 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                   );
                 }
               },
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Data e hora',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.calendar_today),
+                  onPressed: _selecionarDataHora,
+                ),
+              ),
+              controller: TextEditingController(
+                text: DateFormat('HH:mm - dd/MM/yyyy').format(dataHora),
+              ),
+              readOnly: true,
             ),
             // Botão de Agendar
             ElevatedButton(

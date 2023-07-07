@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   sqflite:
   uuid: ^3.0.4
+  flutter_sms: ^2.3.1
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
