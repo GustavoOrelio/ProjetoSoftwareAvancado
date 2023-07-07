@@ -61,4 +61,20 @@ class ClienteSQLiteAdapter implements ClienteRepository {
       );
     });
   }
+
+  @override
+  Future<ClienteDTO> obterClientePorId(String id) async {
+    final db = await database;
+    final maps = await db.query(
+      'clientes',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (maps.isNotEmpty) {
+      return ClienteDTO.fromMap(maps.first);
+    } else {
+      throw Exception('Cliente não encontrado');
+    }
+  }
 }

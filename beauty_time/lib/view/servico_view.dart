@@ -21,4 +21,8 @@ class ServicoView {
   Future<List<ServicoDTO>> obterTodosServicos() async {
     return await servicoRepository.obterTodosServicos();
   }
+
+  Future<ServicoDTO> obterServicoPorId(String id) async {
+    return await servicoRepository.obterServicoPorId(id);
+  }
 }

@@ -6,4 +6,6 @@ abstract class ServicoRepository {
   Future<void> removerServico(String id);
 
   Future<List<ServicoDTO>> obterTodosServicos();
+
+  Future<ServicoDTO> obterServicoPorId(String id);
 }

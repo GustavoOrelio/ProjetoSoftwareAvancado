@@ -12,4 +12,12 @@ class ClienteDTO {
       'telefone': telefone,
     };
   }
+
+  factory ClienteDTO.fromMap(Map<String, dynamic> map) {
+    return ClienteDTO(
+      id: map['id'],
+      nome: map['nome'],
+      telefone: map['telefone'],
+    );
+  }
 }

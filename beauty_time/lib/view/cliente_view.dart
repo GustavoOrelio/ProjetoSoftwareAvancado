@@ -21,4 +21,8 @@ class ClienteView {
   Future<List<ClienteDTO>> obterTodosClientes() async {
     return await clienteRepository.obterTodosClientes();
   }
+
+  Future<ClienteDTO> obterClientePorId(String id) async {
+    return await clienteRepository.obterClientePorId(id);
+  }
 }

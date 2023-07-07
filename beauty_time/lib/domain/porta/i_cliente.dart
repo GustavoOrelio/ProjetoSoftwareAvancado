@@ -6,4 +6,6 @@ abstract class ClienteRepository {
   Future<void> removerCliente(String id);
 
   Future<List<ClienteDTO>> obterTodosClientes();
+
+  Future<ClienteDTO> obterClientePorId(String id);
 }

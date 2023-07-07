@@ -1,10 +1,16 @@
 import 'package:beauty_time/infrastructure/funcionario_sqlite_adapter.dart';
 import 'package:beauty_time/interface_grafica/funcionario_list_screen.dart';
+import 'package:beauty_time/interface_grafica/servico_list_screen.dart';
+import 'package:beauty_time/view/agendamento_view.dart';
 import 'package:beauty_time/view/cliente_view.dart';
 import 'package:beauty_time/view/funcionario_view.dart';
+import 'package:beauty_time/view/servico_view.dart';
 import 'package:flutter/material.dart';
 
+import 'infrastructure/agendamento_sqlite_adapter.dart';
 import 'infrastructure/cliente_sqlite_adapter.dart';
+import 'infrastructure/servico_sqlite_adapter.dart';
+import 'interface_grafica/agendamento_list_screen.dart';
 import 'interface_grafica/cliente_list_screen.dart';
 
 void main() {
@@ -28,7 +34,15 @@ class MyApp extends StatelessWidget {
     var clienteView = ClienteView(clienteRepository: clienteRepository);
 
     var funcionarioRepository = FuncionarioSQLiteAdapter();
-    var funcionarioView = FuncionarioView(funcionarioRepository: funcionarioRepository);
+    var funcionarioView =
+        FuncionarioView(funcionarioRepository: funcionarioRepository);
+
+    var servicoRepository = ServicoSQLiteAdapter();
+    var servicoView = ServicoView(servicoRepository: servicoRepository);
+
+    var agendamentoRepository = AgendamentoSQLiteAdapter();
+    var agendamentoView =
+        AgendamentoView(agendamentoRepository: agendamentoRepository);
 
     return Scaffold(
       appBar: AppBar(
@@ -52,6 +66,22 @@ class MyApp extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(Icons.account_circle),
+              title: Text('Agendamento'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AgendamentoListScreen(
+                            agendamentoView: agendamentoView,
+                            clienteView: clienteView,
+                            funcionarioView: funcionarioView,
+                            servicoView: servicoView,
+                          )),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.account_circle),
               title: Text('Clientes'),
               onTap: () {
                 Navigator.push(
@@ -71,8 +101,21 @@ class MyApp extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => FuncionarioListScreen(
-                        funcionarioView: funcionarioView,
-                      )),
+                            funcionarioView: funcionarioView,
+                          )),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text('Serviços'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ServicoListScreen(
+                            servicoView: servicoView,
+                          )),
                 );
               },
             ),

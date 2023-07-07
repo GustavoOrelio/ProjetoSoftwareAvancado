@@ -57,4 +57,20 @@ class ServicoSQLiteAdapter implements ServicoRepository {
       return ServicoDTO.fromMap(maps[i]);
     });
   }
+
+  @override
+  Future<ServicoDTO> obterServicoPorId(String id) async {
+    final db = await database;
+    final maps = await db.query(
+      'servicos',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (maps.isNotEmpty) {
+      return ServicoDTO.fromMap(maps.first);
+    } else {
+      throw Exception('Serviço não encontrado');
+    }
+  }
 }
