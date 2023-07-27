@@ -38,9 +38,11 @@ class MyApp extends StatelessWidget {
     var servicoRepository = ServicoSQLiteAdapter();
     var smsService = SMSServiceImpl();
 
-    var agendamentoView = AgendamentoView(agendamentoRepository: agendamentoRepository, smsService: smsService);
+    var agendamentoView = AgendamentoView(
+        agendamentoRepository: agendamentoRepository, smsService: smsService);
     var clienteView = ClienteView(clienteRepository: clienteRepository);
-    var funcionarioView = FuncionarioView(funcionarioRepository: funcionarioRepository);
+    var funcionarioView =
+        FuncionarioView(funcionarioRepository: funcionarioRepository);
     var servicoView = ServicoView(servicoRepository: servicoRepository);
 
     return Scaffold(
@@ -121,7 +123,8 @@ class MyApp extends StatelessWidget {
           ],
         ),
       ),
-      body: HomePage( // Aqui você chama a HomePage
+      body: HomePage(
+        // Aqui você chama a HomePage
         agendamentoView: agendamentoView,
         clienteView: clienteView,
         servicoView: servicoView,
